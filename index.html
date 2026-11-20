@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THIAGO SANTOS SYSTEM — Performance & Gestão</title>
+  <style>
+    :root {
+      --bg: #09090b;
+      --surface: #111115;
+      --surface-2: #18181f;
+      --border: rgba(255, 255, 255, 0.11);
+      --gold: #d4af37;
+      --gold-light: #e5c158;
+      --text: #ffffff;
+      --muted: #a1a1aa;
+      --ok: #34d399;
+      --warn: #fbbf24;
+      --danger: #fb7185;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.45;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    header {
+      background: rgba(17, 17, 21, 0.95);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(8px);
+    }
+
+    .header-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 0;
+    }
+
+    .brand-tag {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+    }
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-title span {
+      color: var(--gold);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      color: var(--text);
+    }
+
+    button {
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      padding: 9px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      transition: 0.15s ease;
+    }
+
+    button:hover {
+      border-color: rgba(255, 255, 255, 0.28);
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: #09090b;
+      border-color: var(--gold);
+    }
+
+    .btn-gold:hover {
+      background: var(--gold-light);
+      border-color: var(--gold-light);
+    }
+
+    .btn-ghost-gold {
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--gold-light);
+      border-color: rgba(212, 175, 55, 0.35);
+    }
+
+    .btn-danger {
+      background: rgba(251, 113, 133, 0.12);
+      color: var(--danger);
+      border-color: rgba(251, 113, 133, 0.28);
+    }
+
+    main {
+      padding: 24px 0 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .card-gold {
+      border-color: rgba(212, 175, 55, 0.35);
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 14px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 14px;
+    }
+
+    .kpi-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .kpi-value {
+      font-size: 28px;
+      font-weight: 900;
+      margin-top: 6px;
+    }
+
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .filters-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--gold);
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    th {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+
+    .badge-ok {
+      color: var(--ok);
+      background: rgba(52, 211, 153, 0.12);
+      border-color: rgba(52, 211, 153, 0.3);
+    }
+
+    .badge-warn {
+      color: var(--warn);
+      background: rgba(251, 191, 36, 0.12);
+      border-color: rgba(251, 191, 36, 0.3);
+    }
+
+    .badge-high {
+      color: var(--danger);
+      background: rgba(251, 113, 133, 0.12);
+      border-color: rgba(251, 113, 133, 0.3);
+    }
+
+    .badge-neutral {
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 50;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 720px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--surface);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .sub-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .rpe-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 6px;
+    }
+
+    .rpe-btn {
+      padding: 8px 4px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .rpe-btn.active {
+      background: var(--gold);
+      color: #09090b;
+      border-color: var(--gold);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: var(--surface-2);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--gold);
+      transition: width 0.25s ease;
+    }
+
+    .session-item {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .video-picker-list {
+      max-height: 150px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .video-picker-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      font-size: 12px;
+    }
+
+    .video-picker-row label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      color: var(--text);
+      text-transform: none;
+      letter-spacing: 0;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .video-picker-row input[type="checkbox"] {
+      width: auto;
+      accent-color: var(--gold);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <div>
+        <div class="brand-tag">Performance & Gestão • HTML Completo</div>
+        <div class="brand-title">THIAGO SANTOS <span>SYSTEM</span></div>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" id="btnViewCoach" class="btn-ghost-gold">Painel Preparador</button>
+        <button type="button" id="btnViewStudent" class="btn-ghost-gold">Portal do Aluno</button>
+        <button type="button" id="btnOpenNewAthlete" class="btn-gold">+ Novo Atleta</button>
+        <button type="button" id="btnExportJson" class="btn-ghost-gold">Exportar JSON</button>
+        <button type="button" id="btnImportJson">Importar JSON</button>
+        <input type="file" id="importJsonInput" accept="application/json,.json" class="hidden" />
+        <button type="button" id="btnResetDemo">Resetar Base</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="coachView">
+      <section class="grid-4" style="margin-bottom: 20px;">
+        <div class="card">
+          <div class="kpi-label">Total de Atletas</div>
+          <div class="kpi-value" id="kpiTotal">0</div>
+        </div>
+        <div class="card">
+          <div class="kpi-label">Aptos / Ativos</div>
+          <div class="kpi-value" style="color: var(--gold);" id="kpiActive">0</div>
+        </div>
+        <div class="card">
+          <div class="kpi-label">Carga Média Semanal</div>
+          <div class="kpi-value"><span id="kpiAvgLoad">0</span> <span class="muted">UA</span></div>
+        </div>
+        <div class="card">
+          <div class="kpi-label">Requerem Atenção</div>
+          <div class="kpi-value" style="color: var(--warn);" id="kpiAttention">0</div>
+        </div>
+      </section>
+
+      <section class="card" style="margin-bottom: 20px;">
+        <div class="section-head">
+          <div class="section-title">Elenco / Alunos (<span id="filteredCount">0</span>)</div>
+          <div class="muted">Persistência local (localStorage + IndexedDB) + Backup JSON</div>
+        </div>
+
+        <div class="filters-bar">
+          <input type="text" id="searchAthlete" placeholder="Buscar por nome ou posição..." />
+          <select id="filterStatus">
+            <option value="TODOS">Todos os Status</option>
+            <option value="Ativo">Ativo</option>
+            <option value="Em Recuperação">Em Recuperação</option>
+            <option value="Avaliação Pendente">Avaliação Pendente</option>
+          </select>
+          <select id="filterPlan">
+            <option value="TODOS">Todos os Planos</option>
+            <option value="SEM_PLANO">Sem plano vinculado</option>
+          </select>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Atleta</th>
+                <th>Posição</th>
+                <th>Carga (UA)</th>
+                <th>Meta Semanal</th>
+                <th>Desconforto</th>
+                <th>Status</th>
+                <th style="text-align: right;">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="athletesTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card" style="margin-bottom: 20px;">
+        <div class="section-head">
+          <div>
+            <div class="brand-tag">Periodização & Metas</div>
+            <div class="section-title">Planos de Treino (<span id="plansCount">0</span>)</div>
+          </div>
+          <button type="button" id="btnTogglePlanForm" class="btn-ghost-gold">+ Novo Plano</button>
+        </div>
+
+        <form id="planForm" class="sub-box hidden">
+          <div class="grid-2">
+            <div>
+              <label>Nome do Plano</label>
+              <input type="text" id="planName" required placeholder="Ex: PRÉ-TEMPORADA INTENSA" />
+            </div>
+            <div>
+              <label>Foco Principal</label>
+              <select id="planFocus">
+                <option value="Condicionamento & Resistência">Condicionamento & Resistência</option>
+                <option value="Força & Potência">Força & Potência</option>
+                <option value="Velocidade & Agilidade">Velocidade & Agilidade</option>
+                <option value="Retorno / Prevenção">Retorno / Prevenção</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top: 10px;">
+            <div>
+              <label>Duração (Semanas)</label>
+              <input type="number" id="planWeeks" min="1" max="52" value="4" required />
+            </div>
+            <div>
+              <label>Meta Semanal (UA)</label>
+              <input type="number" id="planTargetLoad" min="0" value="2000" required />
+            </div>
+          </div>
+
+          <div style="margin-top: 10px;">
+            <label>Descrição / Diretrizes</label>
+            <textarea id="planDesc" rows="2" placeholder="Objetivos de carga, recuperação e foco físico..."></textarea>
+          </div>
+
+          <div class="sub-box">
+            <label>Vídeos .MP4 de Referência do Plano</label>
+            <div id="planVideosPicker" class="video-picker-list"></div>
+          </div>
+
+          <div class="btn-row" style="justify-content: flex-end; margin-top: 12px;">
+            <button type="submit" class="btn-gold">Salvar Plano</button>
+          </div>
+        </form>
+
+        <div id="plansGrid" class="grid-3" style="margin-top: 14px;"></div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <div class="brand-tag">Acervo Audiovisual (.MP4)</div>
+            <div class="section-title">Biblioteca de Vídeos por Categoria (<span id="videosCount">0</span>)</div>
+          </div>
+          <button type="button" id="btnToggleVideoForm" class="btn-ghost-gold">+ Adicionar Vídeo MP4</button>
+        </div>
+
+        <form id="videoForm" class="sub-box hidden">
+          <div class="grid-2">
+            <div>
+              <label>Título do Vídeo</label>
+              <input type="text" id="videoTitle" required placeholder="Ex: SPRINT + FREIO COM CONTROLE" />
+            </div>
+            <div>
+              <label>Categoria</label>
+              <select id="videoCategory">
+                <option value="Preparação Física & Condicionamento">Preparação Física & Condicionamento</option>
+                <option value="Força & Potência">Força & Potência</option>
+                <option value="Velocidade & Agilidade">Velocidade & Agilidade</option>
+                <option value="Mobilidade & Prevenção">Mobilidade & Prevenção</option>
+                <option value="Fundamentos & Drills">Fundamentos & Drills</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top: 10px;">
+            <div>
+              <label>Arquivo .MP4 do Dispositivo</label>
+              <input type="file" id="videoFile" accept="video/mp4,.mp4" />
+            </div>
+            <div>
+              <label>Ou URL Direta de Vídeo .MP4</label>
+              <input type="url" id="videoUrlInput" placeholder="https://exemplo.com/exercicio.mp4" />
+            </div>
+          </div>
+
+          <div style="margin-top: 10px;">
+            <label>Pontos Técnicos / Descrição</label>
+            <textarea id="videoDesc" rows="2" placeholder="Detalhes de execução, postura e prevenção..."></textarea>
+          </div>
+
+          <div id="videoFormError" class="muted hidden" style="color: var(--danger); margin-top: 8px;"></div>
+
+          <div class="btn-row" style="justify-content: flex-end; margin-top: 12px;">
+            <button type="submit" class="btn-gold">Salvar Vídeo</button>
+          </div>
+        </form>
+
+        <div class="filters-bar" style="margin-top: 14px;">
+          <select id="filterVideoCategory">
+            <option value="TODAS">Todas as Categorias</option>
+            <option value="Preparação Física & Condicionamento">Preparação Física & Condicionamento</option>
+            <option value="Força & Potência">Força & Potência</option>
+            <option value="Velocidade & Agilidade">Velocidade & Agilidade</option>
+            <option value="Mobilidade & Prevenção">Mobilidade & Prevenção</option>
+            <option value="Fundamentos & Drills">Fundamentos & Drills</option>
+          </select>
+          <input type="text" id="searchVideo" placeholder="Buscar vídeo por título ou descrição..." />
+        </div>
+
+        <div id="videosGrid" class="grid-3"></div>
+      </section>
+    </div>
+
+    <div id="studentView" class="hidden">
+      <section class="card card-gold" style="margin-bottom: 18px;">
+        <label for="studentSelect">Selecione seu Perfil de Atleta</label>
+        <select id="studentSelect"></select>
+      </section>
+
+      <div id="studentContent"></div>
+    </div>
+  </main>
+
+  <div id="newAthleteModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="section-head">
+        <div class="section-title">Cadastrar Novo Atleta</div>
+        <button type="button" id="btnCloseNewAthlete">Fechar</button>
+      </div>
+
+      <form id="newAthleteForm" style="display: flex; flex-direction: column; gap: 12px;">
+        <div>
+          <label>Nome Completo</label>
+          <input type="text" id="newAthleteName" required placeholder="Ex: THIAGO SANTOS" />
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <label>Posição</label>
+            <select id="newAthletePosition">
+              <option value="Goleiro">Goleiro</option>
+              <option value="Zagueiro">Zagueiro</option>
+              <option value="Lateral">Lateral</option>
+              <option value="Meio-Campista">Meio-Campista</option>
+              <option value="Atacante">Atacante</option>
+            </select>
+          </div>
+          <div>
+            <label>Idade</label>
+            <input type="number" id="newAthleteAge" min="10" max="60" required placeholder="24" />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <label>Status Inicial</label>
+            <select id="newAthleteStatus">
+              <option value="Ativo">Ativo</option>
+              <option value="Em Recuperação">Em Recuperação</option>
+              <option value="Avaliação Pendente">Avaliação Pendente</option>
+            </select>
+          </div>
+          <div>
+            <label>Carga Semanal Inicial (UA)</label>
+            <input type="number" id="newAthleteLoad" min="0" value="0" />
+          </div>
+        </div>
+
+        <div>
+          <label>Plano Vinculado</label>
+          <select id="newAthletePlan">
+            <option value="">Sem plano vinculado</option>
+          </select>
+        </div>
+
+        <div class="btn-row" style="justify-content: flex-end; margin-top: 8px;">
+          <button type="submit" class="btn-gold">Salvar Atleta</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="profileModal" class="modal-backdrop">
+    <div class="modal-box" id="profileModalContent"></div>
+  </div>
+
+  <div id="videoPlayerModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="section-head">
+        <div>
+          <div class="brand-tag" id="playerCategory"></div>
+          <div class="section-title" id="playerTitle"></div>
+        </div>
+        <button type="button" id="btnClosePlayer">Fechar</button>
+      </div>
+      <video id="playerElement" controls autoplay playsinline style="width: 100%; border-radius: 12px; background: #000; max-height: 60vh;"></video>
+      <p id="playerDesc" class="muted" style="margin-top: 10px;"></p>
+    </div>
+  </div>
+
+  <script>
+    const ATHLETES_KEY = "ts_html_athletes_v2";
+    const PLANS_KEY = "ts_html_plans_v2";
+    const DB_NAME = "ts_html_videos_db_v2";
+    const STORE_NAME = "videos";
+
+    const DEFAULT_ATHLETES = [
+      {
+        id: "1",
+        name: "THIAGO SANTOS",
+        position: "Meio-Campista",
+        age: 25,
+        status: "Ativo",
+        weeklyLoad: 1850,
+        lastEvaluation: new Date().toLocaleDateString("pt-BR"),
+        planId: "plan-1",
+        referenceVideoIds: [],
+        technicalNotes: "Boa tolerância a esforços intermitentes; manter controle pós-jogo.",
+        latestDiscomfort: { type: "Nenhum", region: "", level: 0, notes: "" },
+        sessions: [
+          {
+            id: "s-1",
+            date: new Date().toLocaleDateString("pt-BR"),
+            title: "Intervalado Alta Intensidade + Campo",
+            rpe: 8,
+            durationMinutes: 75,
+            loadUa: 600,
+            notes: "Bom ritmo final",
+            discomfort: { type: "Nenhum", region: "", level: 0, notes: "" }
+          }
+        ],
+        assessments: [
+          {
+            id: "eval-1",
+            date: new Date().toLocaleDateString("pt-BR"),
+            category: "Velocidade & Agilidade",
+            metricName: "Sprint 20m",
+            numericValue: 3.04,
+            unit: "s",
+            notes: "Linha de base inicial"
+          }
+        ]
+      },
+      {
+        id: "2",
+        name: "RAFAEL MENDES",
+        position: "Atacante",
+        age: 22,
+        status: "Em Recuperação",
+        weeklyLoad: 920,
+        lastEvaluation: new Date().toLocaleDateString("pt-BR"),
+        planId: "plan-1",
+        referenceVideoIds: [],
+        technicalNotes: "Monitorar posterior de coxa em acelerações máximas.",
+        latestDiscomfort: {
+          type: "Muscular",
+          region: "Posterior de Coxa D",
+          level: 4,
+          notes: "Leve tensão no alongamento final"
+        },
+        sessions: [],
+        assessments: []
+      }
+    ];
+
+    const DEFAULT_PLANS = [
+      {
+        id: "plan-1",
+        name: "CONDICIONAMENTO & PERFORMANCE",
+        focus: "Condicionamento & Resistência",
+        durationWeeks: 4,
+        targetWeeklyLoad: 2000,
+        description: "Desenvolvimento de capacidade aeróbia, potência e resistência às repetições.",
+        referenceVideoIds: []
+      }
+    ];
+
+    let state = {
+      view: "coach",
+      athletes: [],
+      plans: [],
+      videos: [],
+      selectedStudentId: "",
+      activeProfileId: null,
+      playerBlobUrl: null
+    };
+
+    function loadFromStorage(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : structuredClone(fallback);
+      } catch {
+        return structuredClone(fallback);
+      }
+    }
+
+    function saveToStorage(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function openVideoDb() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if (!db.objectStoreNames.contains(STORE_NAME)) {
+            db.createObjectStore(STORE_NAME, { keyPath: "id" });
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function idbGetAllVideos() {
+      const db = await openVideoDb();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readonly");
+        const req = tx.objectStore(STORE_NAME).getAll();
+        req.onsuccess = () => resolve(req.result || []);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function idbPutVideo(video) {
+      const db = await openVideoDb();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readwrite");
+        const req = tx.objectStore(STORE_NAME).put(video);
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function idbDeleteVideo(id) {
+      const db = await openVideoDb();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readwrite");
+        const req = tx.objectStore(STORE_NAME).delete(id);
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    function getLoadIndicator(athlete) {
+      const plan = state.plans.find((p) => p.id === athlete.planId);
+      if (!plan || !plan.targetWeeklyLoad) {
+        return { label: "Sem meta", cls: "badge-neutral", tone: "neutral" };
+      }
+      const pct = Math.round((athlete.weeklyLoad / plan.targetWeeklyLoad) * 100);
+      if (pct > 115) return { label: `${pct}% (Sobrecarga)`, cls: "badge-high", tone: "high" };
+      if (pct >= 75) return { label: `${pct}% (Na faixa)`, cls: "badge-ok", tone: "ok" };
+      return { label: `${pct}% (Abaixo)`, cls: "badge-warn", tone: "warning" };
+    }
+
+    function formatAssessmentDelta(athlete, currentAssessment) {
+      const list = athlete.assessments || [];
+      const previous = list.find(
+        (item) =>
+          item.id !== currentAssessment.id &&
+          item.metricName.trim().toLowerCase() ===
+            currentAssessment.metricName.trim().toLowerCase()
+      );
+
+      if (
+        !previous ||
+        typeof currentAssessment.numericValue !== "number" ||
+        typeof previous.numericValue !== "number"
+      ) {
+        return `<span class="badge badge-neutral">Primeira marca</span>`;
+      }
+
+      const diff = Number((currentAssessment.numericValue - previous.numericValue).toFixed(2));
+      if (diff === 0) {
+        return `<span class="badge badge-neutral">0 ${escapeHtml(currentAssessment.unit || "")} vs. anterior</span>`;
+      }
+
+      const sign = diff > 0 ? "+" : "";
+      return `<span class="badge badge-ok">${sign}${diff} ${escapeHtml(currentAssessment.unit || "")} vs. anterior</span>`;
+    }
+
+    function buildChartSvg(athlete, targetLoad = 0) {
+      const sessions = athlete.sessions || [];
+      const points =
+        sessions.length > 0
+          ? sessions
+              .slice()
+              .reverse()
+              .slice(-6)
+              .map((s, idx) => ({
+                label: s.date.slice(0, 5) || `S${idx + 1}`,
+                load: s.loadUa || 0,
+                discomfort:
+                  s.discomfort && s.discomfort.type !== "Nenhum"
+                    ? s.discomfort.level
+                    : 0
+              }))
+          : [
+              {
+                label: "Atual",
+                load: athlete.weeklyLoad || 0,
+                discomfort:
+                  athlete.latestDiscomfort && athlete.latestDiscomfort.type !== "Nenhum"
+                    ? athlete.latestDiscomfort.level
+                    : 0
+              }
+            ];
+
+      const maxVal = Math.max(targetLoad, ...points.map((p) => p.load), 300);
+      const w = 560;
+      const h = 180;
+      const pl = 42;
+      const pr = 16;
+      const pt = 18;
+      const pb = 28;
+      const pw = w - pl - pr;
+      const ph = h - pt - pb;
+
+      const coords = points.map((p, i) => {
+        const x =
+          points.length === 1 ? pl + pw / 2 : pl + (i / (points.length - 1)) * pw;
+        const y = pt + ph - (p.load / maxVal) * ph;
+        return { ...p, x, y };
+      });
+
+      const linePath = coords
+        .map((c, i) => `${i === 0 ? "M" : "L"} ${c.x.toFixed(1)} ${c.y.toFixed(1)}`)
+        .join(" ");
+
+      const targetY =
+        targetLoad > 0
+          ? pt + ph - (Math.min(targetLoad, maxVal) / maxVal) * ph
+          : null;
+
+      return `
+        <div class="sub-box">
+          <div class="section-head" style="margin-bottom: 6px;">
+            <span class="brand-tag">Evolução de Carga (UA) & Desconforto</span>
+            <span class="muted">Ponto vermelho = desconforto ≥ 4/10</span>
+          </div>
+          <svg viewBox="0 0 ${w} ${h}" style="width: 100%; height: auto; display: block;">
+            <line x1="${pl}" y1="${pt + ph}" x2="${w - pr}" y2="${pt + ph}" stroke="rgba(255,255,255,0.12)" />
+            <line x1="${pl}" y1="${pt}" x2="${w - pr}" y2="${pt}" stroke="rgba(255,255,255,0.08)" stroke-dasharray="3 3" />
+            <text x="${pl - 6}" y="${pt + ph + 4}" text-anchor="end" fill="#a1a1aa" font-size="10">0</text>
+            <text x="${pl - 6}" y="${pt + 4}" text-anchor="end" fill="#a1a1aa" font-size="10">${maxVal}</text>
+            ${
+              targetY !== null
+                ? `<line x1="${pl}" y1="${targetY}" x2="${w - pr}" y2="${targetY}" stroke="#34d399" stroke-dasharray="4 4" />`
+                : ""
+            }
+            <path d="${linePath}" fill="none" stroke="#d4af37" stroke-width="2.5" />
+            ${coords
+              .map((c) => {
+                const alert = c.discomfort >= 4;
+                return `
+                  <circle cx="${c.x}" cy="${c.y}" r="5" fill="${alert ? "#fb7185" : "#e5c158"}" stroke="#09090b" stroke-width="2" />
+                  <text x="${c.x}" y="${c.y - 9}" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">${c.load}</text>
+                  <text x="${c.x}" y="${h - 8}" text-anchor="middle" fill="#a1a1aa" font-size="10">${c.label}</text>
+                `;
+              })
+              .join("")}
+          </svg>
+        </div>
+      `;
+    }
+
+    function renderAll() {
+      syncPlanSelects();
+      renderCoachDashboard();
+      renderPlans();
+      renderVideos();
+      renderStudentPortal();
+    }
+
+    function syncPlanSelects() {
+      const filterPlanEl = document.getElementById("filterPlan");
+      const newAthletePlanEl = document.getElementById("newAthletePlan");
+      const prevFilter = filterPlanEl.value;
+
+      filterPlanEl.innerHTML = `
+        <option value="TODOS">Todos os Planos</option>
+        <option value="SEM_PLANO">Sem plano vinculado</option>
+        ${state.plans.map((p) => `<option value="${p.id}">${escapeHtml(p.name)}</option>`).join("")}
+      `;
+      if ([...filterPlanEl.options].some((o) => o.value === prevFilter)) {
+        filterPlanEl.value = prevFilter;
+      }
+
+      newAthletePlanEl.innerHTML = `
+        <option value="">Sem plano vinculado</option>
+        ${state.plans
+          .map(
+            (p) =>
+              `<option value="${p.id}">${escapeHtml(p.name)} (${p.targetWeeklyLoad} UA)</option>`
+          )
+          .join("")}
+      `;
+
+      renderVideoPicker("planVideosPicker", []);
+    }
+
+    function renderVideoPicker(containerId, selectedIds) {
+      const el = document.getElementById(containerId);
+      if (!el) return;
+      if (state.videos.length === 0) {
+        el.innerHTML = `<p class="muted">Nenhum vídeo .mp4 cadastrado ainda na biblioteca.</p>`;
+        return;
+      }
+      el.innerHTML = state.videos
+        .map((v) => {
+          const checked = selectedIds.includes(v.id) ? "checked" : "";
+          return `
+            <div class="video-picker-row">
+              <label>
+                <input type="checkbox" data-vid="${v.id}" ${checked} />
+                <span><strong>${escapeHtml(v.title)}</strong> <span class="muted">• ${escapeHtml(v.category)}</span></span>
+              </label>
+              <button type="button" onclick="openVideoPlayer('${v.id}')">Assistir</button>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function getCheckedVideoIds(containerId) {
+      const el = document.getElementById(containerId);
+      if (!el) return [];
+      return [...el.querySelectorAll('input[type="checkbox"]:checked')].map(
+        (cb) => cb.dataset.vid
+      );
+    }
+
+    function renderCoachDashboard() {
+      const total = state.athletes.length;
+      const active = state.athletes.filter((a) => a.status === "Ativo").length;
+      const avgLoad = total
+        ? Math.round(state.athletes.reduce((sum, a) => sum + (a.weeklyLoad || 0), 0) / total)
+        : 0;
+      const attention = state.athletes.filter((a) => {
+        const ind = getLoadIndicator(a);
+        const hasPain =
+          a.latestDiscomfort &&
+          a.latestDiscomfort.type !== "Nenhum" &&
+          a.latestDiscomfort.level >= 4;
+        return a.status !== "Ativo" || ind.tone === "high" || ind.tone === "warning" || hasPain;
+      }).length;
+
+      document.getElementById("kpiTotal").textContent = total;
+      document.getElementById("kpiActive").textContent = active;
+      document.getElementById("kpiAvgLoad").textContent = avgLoad;
+      document.getElementById("kpiAttention").textContent = attention;
+
+      const q = document.getElementById("searchAthlete").value.trim().toLowerCase();
+      const statusF = document.getElementById("filterStatus").value;
+      const planF = document.getElementById("filterPlan").value;
+
+      const filtered = state.athletes.filter((a) => {
+        const matchQ =
+          !q ||
+          a.name.toLowerCase().includes(q) ||
+          a.position.toLowerCase().includes(q);
+        const matchS = statusF === "TODOS" || a.status === statusF;
+        const matchP =
+          planF === "TODOS"
+            ? true
+            : planF === "SEM_PLANO"
+            ? !a.planId
+            : a.planId === planF;
+        return matchQ && matchS && matchP;
+      });
+
+      document.getElementById("filteredCount").textContent = filtered.length;
+      const tbody = document.getElementById("athletesTableBody");
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="muted" style="text-align:center; padding:20px;">Nenhum atleta encontrado.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered
+        .map((a) => {
+          const ind = getLoadIndicator(a);
+          const disc =
+            a.latestDiscomfort && a.latestDiscomfort.type !== "Nenhum"
+              ? `<span class="badge ${a.latestDiscomfort.level >= 5 ? "badge-high" : "badge-warn"}">${escapeHtml(
+                  a.latestDiscomfort.type
+                )}: ${escapeHtml(a.latestDiscomfort.region || "")} (${a.latestDiscomfort.level}/10)</span>`
+              : `<span class="badge badge-neutral">Sem desconforto</span>`;
+
+          const statusCls =
+            a.status === "Ativo"
+              ? "badge-ok"
+              : a.status === "Em Recuperação"
+              ? "badge-warn"
+              : "badge-neutral";
+
+          return `
+            <tr>
+              <td><strong>${escapeHtml(a.name)}</strong></td>
+              <td>${escapeHtml(a.position)} • ${a.age}a</td>
+              <td style="font-family: monospace; color: var(--gold-light); font-weight: 700;">${a.weeklyLoad} UA</td>
+              <td><span class="badge ${ind.cls}">${escapeHtml(ind.label)}</span></td>
+              <td>${disc}</td>
+              <td><span class="badge ${statusCls}">${escapeHtml(a.status)}</span></td>
+              <td style="text-align: right;">
+                <div class="btn-row" style="justify-content: flex-end;">
+                  <button type="button" class="btn-ghost-gold" onclick="openAthleteProfile('${a.id}')">Ficha</button>
+                  <button type="button" class="btn-danger" onclick="deleteAthlete('${a.id}')">Excluir</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        })
+        .join("");
+    }
+
+    function renderPlans() {
+      document.getElementById("plansCount").textContent = state.plans.length;
+      const grid = document.getElementById("plansGrid");
+      if (state.plans.length === 0) {
+        grid.innerHTML = `<p class="muted">Nenhum plano cadastrado.</p>`;
+        return;
+      }
+      grid.innerHTML = state.plans
+        .map((p) => {
+          const boundCount = state.athletes.filter((a) => a.planId === p.id).length;
+          return `
+            <div class="sub-box" style="margin-top: 0;">
+              <div class="section-head" style="margin-bottom: 6px;">
+                <span class="badge badge-neutral">${escapeHtml(p.focus)}</span>
+                <button type="button" class="btn-danger" onclick="deletePlan('${p.id}')">Excluir</button>
+              </div>
+              <div style="font-weight: 800; font-size: 14px;">${escapeHtml(p.name)}</div>
+              <p class="muted" style="margin-top: 4px;">${escapeHtml(p.description || "")}</p>
+              <div class="muted" style="margin-top: 10px;">
+                Duração: <strong>${p.durationWeeks} sem</strong> • Meta: <strong style="color: var(--gold-light);">${p.targetWeeklyLoad} UA/sem</strong> • Atletas: <strong>${boundCount}</strong> • Vídeos: <strong>${(p.referenceVideoIds || []).length}</strong>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function renderVideos() {
+      const catF = document.getElementById("filterVideoCategory").value;
+      const q = document.getElementById("searchVideo").value.trim().toLowerCase();
+
+      const filtered = state.videos.filter((v) => {
+        const matchC = catF === "TODAS" || v.category === catF;
+        const matchQ =
+          !q ||
+          v.title.toLowerCase().includes(q) ||
+          (v.description || "").toLowerCase().includes(q);
+        return matchC && matchQ;
+      });
+
+      document.getElementById("videosCount").textContent = state.videos.length;
+      const grid = document.getElementById("videosGrid");
+      if (filtered.length === 0) {
+        grid.innerHTML = `<p class="muted">Nenhum vídeo .mp4 nessa categoria/filtro.</p>`;
+        return;
+      }
+
+      grid.innerHTML = filtered
+        .map(
+          (v) => `
+            <div class="sub-box" style="margin-top: 0;">
+              <div class="section-head" style="margin-bottom: 6px;">
+                <span class="badge badge-neutral">${escapeHtml(v.category)}</span>
+                <button type="button" class="btn-danger" onclick="removeVideo('${v.id}')">Excluir</button>
+              </div>
+              <div style="font-weight: 800; font-size: 14px;">${escapeHtml(v.title)}</div>
+              <p class="muted" style="margin-top: 4px;">${escapeHtml(v.description || "")}</p>
+              <div class="section-head" style="margin-top: 12px; margin-bottom: 0;">
+                <span class="muted">${v.fileSizeMb ? `${v.fileSizeMb} MB` : "Link MP4"}</span>
+                <button type="button" class="btn-gold" onclick="openVideoPlayer('${v.id}')">Assistir .MP4</button>
+              </div>
+            </div>
+          `
+        )
+        .join("");
+    }
+
+    function renderStudentPortal() {
+      const select = document.getElementById("studentSelect");
+      const content = document.getElementById("studentContent");
+
+      if (state.athletes.length === 0) {
+        select.innerHTML = `<option value="">Nenhum atleta disponível</option>`;
+        content.innerHTML = `<div class="card"><p class="muted">Cadastre um atleta primeiro.</p></div>`;
+        return;
+      }
+
+      if (!state.selectedStudentId || !state.athletes.some((a) => a.id === state.selectedStudentId)) {
+        state.selectedStudentId = state.athletes[0].id;
+      }
+
+      select.innerHTML = state.athletes
+        .map(
+          (a) =>
+            `<option value="${a.id}" ${a.id === state.selectedStudentId ? "selected" : ""}>${escapeHtml(
+              a.name
+            )} — ${escapeHtml(a.position)}</option>`
+        )
+        .join("");
+
+      const athlete = state.athletes.find((a) => a.id === state.selectedStudentId);
+      if (!athlete) return;
+
+      const plan = state.plans.find((p) => p.id === athlete.planId) || null;
+      const pct =
+        plan && plan.targetWeeklyLoad > 0
+          ? Math.min(100, Math.round((athlete.weeklyLoad / plan.targetWeeklyLoad) * 100))
+          : 0;
+
+      const videoIds = new Set([
+        ...(athlete.referenceVideoIds || []),
+        ...((plan && plan.referenceVideoIds) || [])
+      ]);
+      const myVideos = state.videos.filter((v) => videoIds.has(v.id));
+      const assessmentsList = athlete.assessments || [];
+
+      content.innerHTML = `
+        <div class="card card-gold" style="margin-bottom: 18px;">
+          <div class="section-head">
+            <div>
+              <span class="badge badge-ok">${escapeHtml(athlete.status)}</span>
+              <h2 style="font-size: 22px; font-weight: 900; margin-top: 8px;">${escapeHtml(athlete.name)}</h2>
+              <p class="muted">${escapeHtml(athlete.position)} • ${athlete.age} anos</p>
+            </div>
+            <div style="text-align: right;">
+              <div class="kpi-label">Carga na Semana</div>
+              <div class="kpi-value" style="color: var(--gold-light);">${athlete.weeklyLoad} <span class="muted">UA</span></div>
+            </div>
+          </div>
+
+          ${
+            plan && plan.targetWeeklyLoad > 0
+              ? `
+                <div style="margin-top: 10px;">
+                  <div class="section-head" style="margin-bottom: 2px;">
+                    <span class="muted">Plano: <strong>${escapeHtml(plan.name)}</strong></span>
+                    <span class="muted">${athlete.weeklyLoad} / ${plan.targetWeeklyLoad} UA (${pct}%)</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill" style="width: ${pct}%;"></div></div>
+                </div>
+              `
+              : ""
+          }
+
+          ${buildChartSvg(athlete, plan ? plan.targetWeeklyLoad : 0)}
+
+          <div class="grid-2" style="margin-top: 12px;">
+            <div class="sub-box" style="margin-top: 0;">
+              <div class="brand-tag">Plano Prescrito</div>
+              <div style="font-weight: 700; margin-top: 4px;">${plan ? escapeHtml(plan.name) : "Sem plano vinculado"}</div>
+              <p class="muted" style="margin-top: 4px;">${plan ? escapeHtml(plan.description) : "Aguardando definição do preparador."}</p>
+            </div>
+            <div class="sub-box" style="margin-top: 0;">
+              <div class="brand-tag">Orientações do Preparador</div>
+              <p class="muted" style="color: var(--text); margin-top: 4px;">${escapeHtml(
+                athlete.technicalNotes || "Mantenha a constância e registre sua PSE e desconfortos."
+              )}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 18px;">
+          <div class="brand-tag">Demonstração Técnica</div>
+          <div class="section-title" style="margin-bottom: 12px;">Meus Vídeos .MP4 de Referência (${myVideos.length})</div>
+          ${
+            myVideos.length === 0
+              ? `<p class="muted">Nenhum vídeo vinculado ao seu perfil ou plano.</p>`
+              : `<div class="grid-2">
+                  ${myVideos
+                    .map(
+                      (v) => `
+                        <div class="sub-box" style="margin-top: 0;">
+                          <span class="badge badge-neutral">${escapeHtml(v.category)}</span>
+                          <div style="font-weight: 800; margin-top: 6px;">${escapeHtml(v.title)}</div>
+                          <p class="muted" style="margin-top: 4px;">${escapeHtml(v.description || "")}</p>
+                          <button type="button" class="btn-gold" style="margin-top: 10px;" onclick="openVideoPlayer('${v.id}')">Assistir .MP4</button>
+                        </div>
+                      `
+                    )
+                    .join("")}
+                </div>`
+          }
+        </div>
+
+        <div class="card" style="margin-bottom: 18px;">
+          <div class="brand-tag">Acompanhamento Físico</div>
+          <div class="section-title" style="margin-bottom: 10px;">Minhas Avaliações (${assessmentsList.length})</div>
+          ${
+            assessmentsList.length === 0
+              ? `<p class="muted">Nenhuma avaliação física registrada ainda.</p>`
+              : assessmentsList
+                  .map(
+                    (ev) => `
+                      <div class="session-item">
+                        <div>
+                          <strong>${escapeHtml(ev.metricName)}</strong>
+                          <div class="muted">${ev.date} • ${escapeHtml(ev.category)}${ev.notes ? ` • ${escapeHtml(ev.notes)}` : ""}</div>
+                        </div>
+                        <span style="font-family: monospace; font-weight: 800; color: var(--gold-light);">
+                          ${ev.numericValue} ${escapeHtml(ev.unit || "")}
+                        </span>
+                      </div>
+                    `
+                  )
+                  .join("")
+          }
+        </div>
+
+        <div class="card">
+          <div class="brand-tag">Check-in Pós-Treino</div>
+          <div class="section-title" style="margin-bottom: 12px;">Registrar Treino Concluído</div>
+
+          <form id="studentCheckinForm" style="display: flex; flex-direction: column; gap: 12px;">
+            <div class="grid-2">
+              <div>
+                <label>Treino Realizado</label>
+                <input type="text" id="stTitle" required placeholder="Ex: Treino Físico + Finalização" />
+              </div>
+              <div>
+                <label>Duração (Minutos)</label>
+                <input type="number" id="stDuration" min="1" max="300" value="60" required />
+              </div>
+            </div>
+
+            <div>
+              <label>PSE (1 a 10): <span id="stRpeLabel">7</span></label>
+              <div class="rpe-grid" id="stRpeButtons">
+                ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                  .map(
+                    (n) =>
+                      `<button type="button" class="rpe-btn ${n === 7 ? "active" : ""}" data-rpe="${n}">${n}</button>`
+                  )
+                  .join("")}
+              </div>
+            </div>
+
+            <div class="sub-box">
+              <label>Desconforto Muscular ou Articular</label>
+              <div class="grid-2">
+                <div>
+                  <select id="stDiscType">
+                    <option value="Nenhum">Nenhum</option>
+                    <option value="Muscular">Muscular</option>
+                    <option value="Articular">Articular</option>
+                  </select>
+                </div>
+                <div>
+                  <input type="text" id="stDiscRegion" placeholder="Região (Ex: Posterior coxa D, Joelho E)" />
+                </div>
+              </div>
+              <div class="grid-2" style="margin-top: 8px;">
+                <div>
+                  <label>Intensidade (1 a 10)</label>
+                  <input type="number" id="stDiscLevel" min="1" max="10" value="3" />
+                </div>
+                <div>
+                  <label>Detalhe</label>
+                  <input type="text" id="stDiscNotes" placeholder="Opcional" />
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-gold">Enviar Registro de Treino</button>
+          </form>
+
+          <div style="margin-top: 18px;">
+            <div class="section-title" style="font-size: 14px;">Meu Histórico (${(athlete.sessions || []).length})</div>
+            ${
+              (athlete.sessions || []).length === 0
+                ? `<p class="muted" style="margin-top: 6px;">Nenhuma sessão registrada ainda.</p>`
+                : athlete.sessions
+                    .map(
+                      (s) => `
+                        <div class="session-item">
+                          <div>
+                            <strong>${escapeHtml(s.title)}</strong>
+                            <div class="muted">${s.date} • PSE ${s.rpe} × ${s.durationMinutes} min</div>
+                            ${
+                              s.discomfort && s.discomfort.type !== "Nenhum"
+                                ? `<div style="color: var(--danger); font-size: 11px; font-weight: 700;">${escapeHtml(
+                                    s.discomfort.type
+                                  )}: ${escapeHtml(s.discomfort.region || "")} (${s.discomfort.level}/10)</div>`
+                                : ""
+                            }
+                          </div>
+                          <span style="font-family: monospace; font-weight: 800; color: var(--gold-light);">+${s.loadUa} UA</span>
+                        </div>
+                      `
+                    )
+                    .join("")
+            }
+          </div>
+        </div>
+      `;
+
+      let selectedRpe = 7;
+      document.querySelectorAll("#stRpeButtons .rpe-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          selectedRpe = Number(btn.dataset.rpe);
+          document.getElementById("stRpeLabel").textContent = selectedRpe;
+          document
+            .querySelectorAll("#stRpeButtons .rpe-btn")
+            .forEach((b) => b.classList.toggle("active", Number(b.dataset.rpe) === selectedRpe));
+        });
+      });
+
+      document.getElementById("studentCheckinForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const title = document.getElementById("stTitle").value.trim();
+        const duration = Math.max(1, Number(document.getElementById("stDuration").value) || 1);
+        const loadUa = selectedRpe * duration;
+        const discType = document.getElementById("stDiscType").value;
+        const discRegion = document.getElementById("stDiscRegion").value.trim();
+        const discLevel = Math.min(10, Math.max(1, Number(document.getElementById("stDiscLevel").value) || 1));
+        const discNotes = document.getElementById("stDiscNotes").value.trim();
+        const today = new Date().toLocaleDateString("pt-BR");
+
+        const discomfort =
+          discType === "Nenhum"
+            ? { type: "Nenhum", region: "", level: 0, notes: "" }
+            : { type: discType, region: discRegion || "Não especificada", level: discLevel, notes: discNotes };
+
+        const newSession = {
+          id: `s-${Date.now()}`,
+          date: today,
+          title,
+          rpe: selectedRpe,
+          durationMinutes: duration,
+          loadUa,
+          discomfort
+        };
+
+        athlete.weeklyLoad = (athlete.weeklyLoad || 0) + loadUa;
+        athlete.lastEvaluation = today;
+        athlete.latestDiscomfort = discomfort;
+        athlete.sessions = [newSession, ...(athlete.sessions || [])];
+
+        saveToStorage(ATHLETES_KEY, state.athletes);
+        renderAll();
+      });
+    }
+
+    window.openAthleteProfile = function (id) {
+      const athlete = state.athletes.find((a) => a.id === id);
+      if (!athlete) return;
+      state.activeProfileId = id;
+
+      const plan = state.plans.find((p) => p.id === athlete.planId);
+      const disc = athlete.latestDiscomfort || { type: "Nenhum", region: "", level: 0, notes: "" };
+      const assessmentsList = athlete.assessments || [];
+
+      const box = document.getElementById("profileModalContent");
+      box.innerHTML = `
+        <div class="section-head">
+          <div>
+            <div class="brand-tag">Ficha Individual</div>
+            <div class="section-title">${escapeHtml(athlete.name)}</div>
+            <div class="muted">${escapeHtml(athlete.position)} • ${athlete.age} anos • Última avaliação: ${escapeHtml(athlete.lastEvaluation || "-")}</div>
+          </div>
+          <button type="button" onclick="closeProfileModal()">Fechar</button>
+        </div>
+
+        ${buildChartSvg(athlete, plan ? plan.targetWeeklyLoad : 0)}
+
+        <form id="editProfileForm" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
+          <div class="grid-3">
+            <div>
+              <label>Status</label>
+              <select id="profStatus">
+                <option value="Ativo" ${athlete.status === "Ativo" ? "selected" : ""}>Ativo</option>
+                <option value="Em Recuperação" ${athlete.status === "Em Recuperação" ? "selected" : ""}>Em Recuperação</option>
+                <option value="Avaliação Pendente" ${athlete.status === "Avaliação Pendente" ? "selected" : ""}>Avaliação Pendente</option>
+              </select>
+            </div>
+            <div>
+              <label>Carga Semanal (UA)</label>
+              <input type="number" id="profLoad" min="0" value="${athlete.weeklyLoad || 0}" />
+            </div>
+            <div>
+              <label>Plano Vinculado</label>
+              <select id="profPlan">
+                <option value="">Sem plano</option>
+                ${state.plans
+                  .map(
+                    (p) =>
+                      `<option value="${p.id}" ${athlete.planId === p.id ? "selected" : ""}>${escapeHtml(
+                        p.name
+                      )}</option>`
+                  )
+                  .join("")}
+              </select>
+            </div>
+          </div>
+
+          <div class="sub-box">
+            <label>Feedback de Desconforto Muscular ou Articular</label>
+            <div class="grid-2">
+              <select id="profDiscType">
+                <option value="Nenhum" ${disc.type === "Nenhum" ? "selected" : ""}>Nenhum</option>
+                <option value="Muscular" ${disc.type === "Muscular" ? "selected" : ""}>Muscular</option>
+                <option value="Articular" ${disc.type === "Articular" ? "selected" : ""}>Articular</option>
+              </select>
+              <input type="text" id="profDiscRegion" value="${escapeHtml(disc.region || "")}" placeholder="Região (Ex: Posterior coxa E, Joelho D)" />
+            </div>
+            <div class="grid-2" style="margin-top: 8px;">
+              <div>
+                <label>Intensidade (0 a 10)</label>
+                <input type="number" id="profDiscLevel" min="0" max="10" value="${disc.level || 0}" />
+              </div>
+              <div>
+                <label>Observação</label>
+                <input type="text" id="profDiscNotes" value="${escapeHtml(disc.notes || "")}" />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label>Observações Técnicas</label>
+            <textarea id="profNotes" rows="2">${escapeHtml(athlete.technicalNotes || "")}</textarea>
+          </div>
+
+          <div class="sub-box">
+            <label>Vídeos .MP4 Vinculados ao Atleta</label>
+            <div id="profVideosPicker" class="video-picker-list"></div>
+          </div>
+
+          <div class="btn-row" style="justify-content: flex-end;">
+            <button type="submit" class="btn-gold">Salvar Ficha</button>
+          </div>
+        </form>
+
+        <div class="sub-box" style="margin-top: 16px;">
+          <div class="brand-tag">Registrar Sessão (PSE × Duração)</div>
+          <form id="profSessionForm" style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+            <div class="grid-3">
+              <input type="text" id="sessTitle" required placeholder="Ex: Treino de Força + Campo" />
+              <input type="number" id="sessRpe" min="1" max="10" value="7" placeholder="PSE (1-10)" />
+              <input type="number" id="sessMin" min="1" max="300" value="60" placeholder="Minutos" />
+            </div>
+            <button type="submit" class="btn-ghost-gold">+ Adicionar Sessão e Somar UA</button>
+          </form>
+        </div>
+
+        <div class="sub-box" style="margin-top: 16px;">
+          <div class="brand-tag">Avaliações Físicas & Testes (${assessmentsList.length})</div>
+          <form id="profAssessmentForm" style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+            <div class="grid-2">
+              <div>
+                <label>Categoria da Avaliação</label>
+                <select id="evalCategory">
+                  <option value="Força & Potência">Força & Potência</option>
+                  <option value="Velocidade & Agilidade">Velocidade & Agilidade</option>
+                  <option value="Resistência / Condicionamento">Resistência / Condicionamento</option>
+                  <option value="Antropometria / Composição">Antropometria / Composição</option>
+                  <option value="TAF / Aptidão">TAF / Aptidão</option>
+                </select>
+              </div>
+              <div>
+                <label>Teste / Métrica</label>
+                <input type="text" id="evalMetric" required placeholder="Ex: CMJ, Sprint 20m, Yo-Yo, Peso" />
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div>
+                <label>Valor Numérico do Resultado</label>
+                <input type="number" step="0.01" id="evalValue" required placeholder="Ex: 42.5" />
+              </div>
+              <div>
+                <label>Unidade</label>
+                <input type="text" id="evalUnit" placeholder="Ex: cm, s, kg, m, reps" />
+              </div>
+            </div>
+
+            <div>
+              <label>Observação da Avaliação</label>
+              <input type="text" id="evalNotes" placeholder="Ex: Boa mecânica, sem dor" />
+            </div>
+
+            <button type="submit" class="btn-gold">+ Registrar Avaliação Física</button>
+          </form>
+
+          <div style="margin-top: 14px;">
+            ${
+              assessmentsList.length === 0
+                ? `<p class="muted">Nenhuma avaliação física registrada ainda.</p>`
+                : assessmentsList
+                    .map(
+                      (ev) => `
+                        <div class="session-item">
+                          <div>
+                            <strong>${escapeHtml(ev.metricName)}</strong>
+                            <span class="badge badge-neutral" style="margin-left: 6px;">${escapeHtml(ev.category)}</span>
+                            <div class="muted">${ev.date}${ev.notes ? ` • ${escapeHtml(ev.notes)}` : ""}</div>
+                          </div>
+                          <div style="text-align: right;">
+                            <div style="font-family: monospace; font-weight: 800; color: var(--gold-light); font-size: 14px;">
+                              ${ev.numericValue} ${escapeHtml(ev.unit || "")}
+                            </div>
+                            <div style="margin-top: 4px;">${formatAssessmentDelta(athlete, ev)}</div>
+                          </div>
+                        </div>
+                      `
+                    )
+                    .join("")
+            }
+          </div>
+        </div>
+      `;
+
+      renderVideoPicker("profVideosPicker", athlete.referenceVideoIds || []);
+
+      document.getElementById("editProfileForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const dType = document.getElementById("profDiscType").value;
+        athlete.status = document.getElementById("profStatus").value;
+        athlete.weeklyLoad = Math.max(0, Number(document.getElementById("profLoad").value) || 0);
+        athlete.planId = document.getElementById("profPlan").value || undefined;
+        athlete.technicalNotes = document.getElementById("profNotes").value.trim();
+        athlete.referenceVideoIds = getCheckedVideoIds("profVideosPicker");
+        athlete.lastEvaluation = new Date().toLocaleDateString("pt-BR");
+        athlete.latestDiscomfort =
+          dType === "Nenhum"
+            ? { type: "Nenhum", region: "", level: 0, notes: "" }
+            : {
+                type: dType,
+                region: document.getElementById("profDiscRegion").value.trim(),
+                level: Math.min(10, Math.max(1, Number(document.getElementById("profDiscLevel").value) || 1)),
+                notes: document.getElementById("profDiscNotes").value.trim()
+              };
+
+        saveToStorage(ATHLETES_KEY, state.athletes);
+        closeProfileModal();
+        renderAll();
+      });
+
+      document.getElementById("profSessionForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const title = document.getElementById("sessTitle").value.trim();
+        const rpe = Math.min(10, Math.max(1, Number(document.getElementById("sessRpe").value) || 1));
+        const mins = Math.max(1, Number(document.getElementById("sessMin").value) || 1);
+        const loadUa = rpe * mins;
+        const today = new Date().toLocaleDateString("pt-BR");
+
+        athlete.sessions = [
+          {
+            id: `s-${Date.now()}`,
+            date: today,
+            title,
+            rpe,
+            durationMinutes: mins,
+            loadUa,
+            discomfort: athlete.latestDiscomfort
+          },
+          ...(athlete.sessions || [])
+        ];
+        athlete.weeklyLoad = (athlete.weeklyLoad || 0) + loadUa;
+        athlete.lastEvaluation = today;
+
+        saveToStorage(ATHLETES_KEY, state.athletes);
+        renderAll();
+        openAthleteProfile(athlete.id);
+      });
+
+      document.getElementById("profAssessmentForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const metricName = document.getElementById("evalMetric").value.trim();
+        const numericValue = Number(document.getElementById("evalValue").value);
+        if (!metricName || Number.isNaN(numericValue)) return;
+
+        const today = new Date().toLocaleDateString("pt-BR");
+        athlete.assessments = [
+          {
+            id: `eval-${Date.now()}`,
+            date: today,
+            category: document.getElementById("evalCategory").value,
+            metricName,
+            numericValue,
+            unit: document.getElementById("evalUnit").value.trim(),
+            notes: document.getElementById("evalNotes").value.trim()
+          },
+          ...(athlete.assessments || [])
+        ];
+        athlete.lastEvaluation = today;
+
+        saveToStorage(ATHLETES_KEY, state.athletes);
+        renderAll();
+        openAthleteProfile(athlete.id);
+      });
+
+      document.getElementById("profileModal").classList.add("open");
+    };
+
+    window.closeProfileModal = function () {
+      state.activeProfileId = null;
+      document.getElementById("profileModal").classList.remove("open");
+    };
+
+    window.deleteAthlete = function (id) {
+      state.athletes = state.athletes.filter((a) => a.id !== id);
+      saveToStorage(ATHLETES_KEY, state.athletes);
+      renderAll();
+    };
+
+    window.deletePlan = function (id) {
+      state.plans = state.plans.filter((p) => p.id !== id);
+      state.athletes = state.athletes.map((a) => (a.planId === id ? { ...a, planId: undefined } : a));
+      saveToStorage(PLANS_KEY, state.plans);
+      saveToStorage(ATHLETES_KEY, state.athletes);
+      renderAll();
+    };
+
+    window.removeVideo = async function (id) {
+      await idbDeleteVideo(id);
+      state.videos = state.videos.filter((v) => v.id !== id);
+      renderAll();
+    };
+
+    window.openVideoPlayer = function (id) {
+      const video = state.videos.find((v) => v.id === id);
+      if (!video) return;
+
+      if (state.playerBlobUrl) {
+        URL.revokeObjectURL(state.playerBlobUrl);
+        state.playerBlobUrl = null;
+      }
+
+      const src =
+        video.sourceType === "upload" && video.fileBlob
+          ? (state.playerBlobUrl = URL.createObjectURL(video.fileBlob))
+          : video.videoUrl;
+
+      document.getElementById("playerCategory").textContent = video.category;
+      document.getElementById("playerTitle").textContent = video.title;
+      document.getElementById("playerDesc").textContent = video.description || "";
+      const player = document.getElementById("playerElement");
+      player.src = src || "";
+      document.getElementById("videoPlayerModal").classList.add("open");
+    };
+
+    function closeVideoPlayer() {
+      const player = document.getElementById("playerElement");
+      player.pause();
+      player.src = "";
+      if (state.playerBlobUrl) {
+        URL.revokeObjectURL(state.playerBlobUrl);
+        state.playerBlobUrl = null;
+      }
+      document.getElementById("videoPlayerModal").classList.remove("open");
+    }
+
+    function showBackupNotice(msg, isError = false) {
+      let notice = document.getElementById("backupNoticeBanner");
+      if (!notice) {
+        notice = document.createElement("div");
+        notice.id = "backupNoticeBanner";
+        notice.className = "card";
+        notice.style.marginTop = "16px";
+        notice.style.padding = "12px 16px";
+        notice.style.fontSize = "12px";
+        notice.style.fontWeight = "700";
+        const mainEl = document.querySelector("main.container");
+        mainEl.prepend(notice);
+      }
+      notice.style.borderColor = isError
+        ? "rgba(251, 113, 133, 0.45)"
+        : "rgba(52, 211, 153, 0.45)";
+      notice.style.color = isError ? "var(--danger)" : "var(--ok)";
+      notice.textContent = msg;
+      notice.classList.remove("hidden");
+
+      clearTimeout(window.__backupNoticeTimer);
+      window.__backupNoticeTimer = setTimeout(() => {
+        notice.classList.add("hidden");
+      }, 4500);
+    }
+
+    function exportSystemBackup() {
+      const payload = {
+        system: "THIAGO SANTOS SYSTEM",
+        version: "1.0",
+        exportedAt: new Date().toISOString(),
+        athletes: state.athletes || [],
+        plans: state.plans || []
+      };
+
+      const blob = new Blob([JSON.stringify(payload, null, 2)], {
+        type: "application/json"
+      });
+      const url = URL.createObjectURL(blob);
+      const stamp = new Date().toISOString().slice(0, 10);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `thiagosantos-system-backup-${stamp}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      showBackupNotice("Backup JSON exportado com sucesso.");
+    }
+
+    function importSystemBackupFromFile(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(String(reader.result || "{}"));
+          const importedAthletes = Array.isArray(parsed)
+            ? parsed
+            : Array.isArray(parsed.athletes)
+            ? parsed.athletes
+            : null;
+
+          if (!importedAthletes) {
+            showBackupNotice(
+              "Arquivo JSON inválido: estrutura de atletas não encontrada.",
+              true
+            );
+            return;
+          }
+
+          state.athletes = importedAthletes.map((a) => ({
+            ...a,
+            sessions: Array.isArray(a.sessions) ? a.sessions : [],
+            assessments: Array.isArray(a.assessments) ? a.assessments : [],
+            referenceVideoIds: Array.isArray(a.referenceVideoIds)
+              ? a.referenceVideoIds
+              : [],
+            latestDiscomfort: a.latestDiscomfort || {
+              type: "Nenhum",
+              region: "",
+              level: 0,
+              notes: ""
+            }
+          }));
+
+          if (Array.isArray(parsed.plans)) {
+            state.plans = parsed.plans;
+            saveToStorage(PLANS_KEY, state.plans);
+          }
+
+          saveToStorage(ATHLETES_KEY, state.athletes);
+          renderAll();
+          showBackupNotice(
+            `Backup restaurado (${state.athletes.length} atleta(s) carregado(s)).`
+          );
+        } catch {
+          showBackupNotice(
+            "Não foi possível ler o arquivo JSON. Verifique se o formato está válido.",
+            true
+          );
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    document.getElementById("btnViewCoach").addEventListener("click", () => {
+      document.getElementById("coachView").classList.remove("hidden");
+      document.getElementById("studentView").classList.add("hidden");
+    });
+
+    document.getElementById("btnViewStudent").addEventListener("click", () => {
+      document.getElementById("coachView").classList.add("hidden");
+      document.getElementById("studentView").classList.remove("hidden");
+      renderStudentPortal();
+    });
+
+    document.getElementById("studentSelect").addEventListener("change", (e) => {
+      state.selectedStudentId = e.target.value;
+      renderStudentPortal();
+    });
+
+    document.getElementById("btnOpenNewAthlete").addEventListener("click", () => {
+      document.getElementById("newAthleteModal").classList.add("open");
+    });
+
+    document.getElementById("btnCloseNewAthlete").addEventListener("click", () => {
+      document.getElementById("newAthleteModal").classList.remove("open");
+    });
+
+    document.getElementById("newAthleteForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("newAthleteName").value.trim().toUpperCase();
+      const position = document.getElementById("newAthletePosition").value;
+      const age = Number(document.getElementById("newAthleteAge").value);
+      const status = document.getElementById("newAthleteStatus").value;
+      const weeklyLoad = Math.max(0, Number(document.getElementById("newAthleteLoad").value) || 0);
+      const planId = document.getElementById("newAthletePlan").value || undefined;
+
+      if (!name || !age) return;
+
+      state.athletes.unshift({
+        id: String(Date.now()),
+        name,
+        position,
+        age,
+        status,
+        weeklyLoad,
+        lastEvaluation: new Date().toLocaleDateString("pt-BR"),
+        planId,
+        referenceVideoIds: [],
+        technicalNotes: "",
+        latestDiscomfort: { type: "Nenhum", region: "", level: 0, notes: "" },
+        sessions: [],
+        assessments: []
+      });
+
+      saveToStorage(ATHLETES_KEY, state.athletes);
+      e.target.reset();
+      document.getElementById("newAthleteModal").classList.remove("open");
+      renderAll();
+    });
+
+    document.getElementById("btnTogglePlanForm").addEventListener("click", () => {
+      document.getElementById("planForm").classList.toggle("hidden");
+      renderVideoPicker("planVideosPicker", []);
+    });
+
+    document.getElementById("planForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("planName").value.trim().toUpperCase();
+      const focus = document.getElementById("planFocus").value;
+      const durationWeeks = Math.max(1, Number(document.getElementById("planWeeks").value) || 4);
+      const targetWeeklyLoad = Math.max(0, Number(document.getElementById("planTargetLoad").value) || 0);
+      const description = document.getElementById("planDesc").value.trim();
+      const referenceVideoIds = getCheckedVideoIds("planVideosPicker");
+
+      if (!name) return;
+
+      state.plans.unshift({
+        id: `plan-${Date.now()}`,
+        name,
+        focus,
+        durationWeeks,
+        targetWeeklyLoad,
+        description,
+        referenceVideoIds
+      });
+
+      saveToStorage(PLANS_KEY, state.plans);
+      e.target.reset();
+      document.getElementById("planForm").classList.add("hidden");
+      renderAll();
+    });
+
+    document.getElementById("btnToggleVideoForm").addEventListener("click", () => {
+      document.getElementById("videoForm").classList.toggle("hidden");
+    });
+
+    document.getElementById("videoForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById("videoFormError");
+      errEl.classList.add("hidden");
+
+      const title = document.getElementById("videoTitle").value.trim().toUpperCase();
+      const category = document.getElementById("videoCategory").value;
+      const file = document.getElementById("videoFile").files[0] || null;
+      const urlVal = document.getElementById("videoUrlInput").value.trim();
+      const description = document.getElementById("videoDesc").value.trim();
+
+      if (!title) return;
+
+      let newVideo = null;
+      if (file) {
+        const isMp4 = file.type === "video/mp4" || file.name.toLowerCase().endsWith(".mp4");
+        if (!isMp4) {
+          errEl.textContent = "Selecione um arquivo .mp4 válido.";
+          errEl.classList.remove("hidden");
+          return;
+        }
+        newVideo = {
+          id: `vid-${Date.now()}`,
+          title,
+          category,
+          description,
+          sourceType: "upload",
+          fileBlob: file,
+          fileSizeMb: Number((file.size / (1024 * 1024)).toFixed(2))
+        };
+      } else if (urlVal && urlVal.toLowerCase().includes(".mp4")) {
+        newVideo = {
+          id: `vid-${Date.now()}`,
+          title,
+          category,
+          description,
+          sourceType: "url",
+          videoUrl: urlVal
+        };
+      } else {
+        errEl.textContent = "Envie um arquivo .mp4 ou informe um link direto .mp4.";
+        errEl.classList.remove("hidden");
+        return;
+      }
+
+      await idbPutVideo(newVideo);
+      state.videos.unshift(newVideo);
+      e.target.reset();
+      document.getElementById("videoForm").classList.add("hidden");
+      renderAll();
+    });
+
+    document.getElementById("btnClosePlayer").addEventListener("click", closeVideoPlayer);
+
+    document
+      .getElementById("btnExportJson")
+      .addEventListener("click", exportSystemBackup);
+
+    const importInputEl = document.getElementById("importJsonInput");
+    document.getElementById("btnImportJson").addEventListener("click", () => {
+      importInputEl.value = "";
+      importInputEl.click();
+    });
+    importInputEl.addEventListener("change", (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (file) importSystemBackupFromFile(file);
+    });
+
+    ["searchAthlete", "filterStatus", "filterPlan"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", renderCoachDashboard);
+      document.getElementById(id).addEventListener("change", renderCoachDashboard);
+    });
+
+    ["filterVideoCategory", "searchVideo"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", renderVideos);
+      document.getElementById(id).addEventListener("change", renderVideos);
+    });
+
+    document.getElementById("btnResetDemo").addEventListener("click", () => {
+      state.athletes = structuredClone(DEFAULT_ATHLETES);
+      state.plans = structuredClone(DEFAULT_PLANS);
+      saveToStorage(ATHLETES_KEY, state.athletes);
+      saveToStorage(PLANS_KEY, state.plans);
+      renderAll();
+    });
+
+    (async function init() {
+      state.athletes = loadFromStorage(ATHLETES_KEY, DEFAULT_ATHLETES);
+      state.plans = loadFromStorage(PLANS_KEY, DEFAULT_PLANS);
+      try {
+        state.videos = await idbGetAllVideos();
+      } catch {
+        state.videos = [];
+      }
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
+
